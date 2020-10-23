@@ -1,0 +1,27 @@
+version:
+  major: 0
+  minor: 1
+  micro: 3
+  a: null
+  b: null
+  rc: null
+  post: 1
+  dev: null
+managed_values:
+  NAME: versipy
+  DESCRIPTION: Flexible python version and medatada managment across the python packaging
+    ecosystem and integrated with git
+  URL: https://github.com/a-slide/versipy
+  AUTHOR: Adrien Leger
+  EMAIL: contact AT adrienleger DOT com
+  LICENSE: MIT
+  MINIMAL_PYTHON: '>=3.6'
+  ENTRY_POINT_1: versipy=versipy.__main__:main
+  DEPENDENCY_1: colorlog>=4.1.0
+  DEPENDENCY_2: pyyaml>=5.3.1
+  DEPENDENCY_3: gitpython>=3.1.9
+managed_files:
+  versipy_templates/setup.py: setup.py
+  versipy_templates/meta.yaml: meta.yaml
+  versipy_templates/__init__.py: versipy/__init__.py
+   versipy_templates/README.md: README.md

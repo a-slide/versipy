@@ -1,0 +1,31 @@
+package:
+  name: {{ NAME|lower }}
+  version: {{ VERSION }}
+
+source:
+  path: dist/{{ NAME }}-{{ VERSION }}.tar.gz
+
+build:
+  number: 0
+  script: "pip install {{ NAME }}-{{ VERSION }}.tar.gz --no-deps --ignore-installed -vv"
+  entry_points:
+    - ENTRY_POINT_1
+  noarch: "python"
+
+requirements:
+  build:
+    - python>=MINIMAL_PYTHON
+    - pip>=19.2.1
+    - ripgrep>=11.0.1
+  run:
+    - DEPENDENCY_1
+    - DEPENDENCY_2
+    - DEPENDENCY_3
+about:
+  home: URL
+  license: LICENSE
+  summary: DESCRIPTION
+
+extra:
+  author: AUTHOR
+  email: EMAIL
