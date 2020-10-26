@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 setup(
     name="versipy",
     description="Versatile version and medatada managment across the python packaging ecosystem, integrated with git",
-    version="0.1.dev6",
+    version="0.1.dev7",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/a-slide/versipy",
