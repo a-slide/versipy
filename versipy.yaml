@@ -14,7 +14,7 @@ managed_values:
   __url__: https://github.com/a-slide/versipy
   __author__: Adrien Leger
   __author_email__: contact@adrienleger.com
-  __author_url__: adrienleger.com
+  __author_url__: https://adrienleger.com/
   __licence__: GPLv3
   __licence_url__: https://www.gnu.org/licenses/gpl-3.0.en.html
   __minimal_python__: '>=3.6'
