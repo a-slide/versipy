@@ -1,13 +1,17 @@
+{% set version = "__version__" %}
+{% set name = "__name__" %}
+
 package:
-  name: {{ __name__|lower }}
-  version: __version__
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-  path: dist/__name__-__version__.tar.gz
+  path: dist/{{ name }}-{{ version }}.tar.gz
 
 build:
   number: 0
-  script: "pip install __name__-__version__.tar.gz --no-deps --ignore-installed -vv"
+  script: "pip install {{ name }}-{{ version }}.tar.gz --no-deps --ignore-installed -vv "
+
   entry_points:
     - __entry_point1__
   noarch: "python"
