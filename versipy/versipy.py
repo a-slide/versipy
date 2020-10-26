@@ -24,8 +24,10 @@ def init_repo(
     **kwargs,
 ):
     """
-    * versipy_fn:
+    * versipy_fn
         Path to write a template versipy YAML file
+    * versipy_history_fn
+        Path to write a the versipy history file
     * overwrite
         Do not display a confirmation message before overwriting an existing file
     """
@@ -52,7 +54,7 @@ def init_repo(
 def current_version(versipy_fn: str = "versipy.yaml", verbose: bool = False, quiet: bool = False, **kwargs):
     """
     Return the current package version
-    * versipy_fn:
+    * versipy_fn
         Path to the versipy YAML info file containing package metadata
     """
     # Init method
@@ -110,7 +112,7 @@ def bump_up_version(
         Increment the major post level by 1
     * dev
         Increment the major dev level by 1
-    * versipy_fn:
+    * versipy_fn
         Path to the versipy YAML info file containing package metadata
     * versipy_history_fn
         Path to the versipy history file
@@ -190,7 +192,7 @@ def set_version(
     version is fully replaced.
     * version_str
         python PEP compliant version string (ex: 0.5, 1.2a1, 0.2.5.dev1, 1.2.4.rc1.post2)
-    * versipy_fn:
+    * versipy_fn
         Path to the versipy YAML info file containing package metadata
     * versipy_history_fn
         Path to the versipy history file
