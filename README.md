@@ -1,4 +1,4 @@
-# versipy v0.1.dev1
+# versipy v0.1.dev2
 
 ![versipy](pictures/versipy.png)
 
@@ -90,4 +90,4 @@ Copyright © 2020 Adrien Leger
 
 ## Authors
 
-* Adrien Leger / contact@adrienleger.com / adrienleger.com
+* Adrien Leger / contact@adrienleger.com / https://adrienleger.com/
