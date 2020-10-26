@@ -15,21 +15,38 @@ from versipy.common import *
 # HEAD FUNCTIONS ################################################################################################
 
 
-def init_repo(versipy_fn: str = "versipy.yaml", verbose: bool = False, quiet: bool = False, **kwargs):
+def init_repo(
+    versipy_fn: str = "versipy.yaml",
+    versipy_history_fn: str = "versipy_history.txt",
+    overwrite: bool = False,
+    verbose: bool = False,
+    quiet: bool = False,
+    **kwargs,
+):
     """
     * versipy_fn:
-        Path to the versipy YAML info file
+        Path to write a template versipy YAML file
+    * overwrite
+        Do not display a confirmation message before overwriting an existing file
     """
     # Init method
     opt_summary_dict = opt_summary(local_opt=locals())
     log = get_logger(name="versipy init_repo", verbose=verbose, quiet=quiet)
 
-    log.warning("Checking options and input files")
+    log.warning("Generating example template versipy YAML file")
     log_dict(opt_summary_dict, log.debug, "Options summary")
 
-    generate_versipy_yaml(versipy_fn=versipy_fn, log=log)
+    info_d = get_versipy_yaml_template()
 
-    # Create example templates ?
+    update_versipy_files(
+        info_d=info_d,
+        versipy_fn=versipy_fn,
+        versipy_history_fn=versipy_history_fn,
+        message="Initialise versipy history",
+        overwrite=overwrite,
+        dry=False,
+        log=log,
+    )
 
 
 def current_version(versipy_fn: str = "versipy.yaml", verbose: bool = False, quiet: bool = False, **kwargs):
@@ -41,8 +58,8 @@ def current_version(versipy_fn: str = "versipy.yaml", verbose: bool = False, qui
     # Init method
     opt_summary_dict = opt_summary(local_opt=locals())
     log = get_logger(name="versipy bump_up", verbose=verbose, quiet=quiet)
-    log.warning("Bump up version package version")
 
+    log.warning("Bumping up version package version")
     log.info("Checking options and input files")
     log_dict(opt_summary_dict, log.debug, "Options summary")
 
@@ -57,16 +74,17 @@ def bump_up_version(
     major: bool = False,
     minor: bool = False,
     micro: bool = False,
-    a: bool = False,
-    b: bool = False,
+    alpha: bool = False,
+    beta: bool = False,
     rc: bool = False,
     post: bool = False,
     dev: bool = False,
     versipy_fn: str = "versipy.yaml",
     versipy_history_fn: str = "versipy_history.txt",
-    overwrite_all: bool = False,
+    overwrite: bool = False,
     git_push: bool = False,
     message: str = "Versipy auto bump-up",
+    dry: bool = False,
     verbose: bool = False,
     quiet: bool = False,
     **kwargs,
@@ -82,12 +100,12 @@ def bump_up_version(
         Increment the micro version level by 1
     * micro
         Increment the micro version level by 1
-    * a
-        Increment the alpha version level by 1
-    * b
-        Increment the beta version level by 1
+    * alpha
+        Increment the alpha (a) version level by 1
+    * beta
+        Increment the beta (b) version level by 1
     * rc
-        Increment the release candidate version level by 1
+        Increment the release candidate (rc) version level by 1
     * post
         Increment the major post level by 1
     * dev
@@ -96,12 +114,14 @@ def bump_up_version(
         Path to the versipy YAML info file containing package metadata
     * versipy_history_fn
         Path to the versipy history file
-    * overwrite_all
+    * overwrite
         Do not display a confirmation message before overwriting an existing file
     * git_push
-        commit and push the files modified by versipy and set a git version tag
+        Commit and push the files modified by versipy and set a git version tag
     * message
         Message used for the history file and the git commit is used in combination with `git_push`
+    * dry
+        Dry run, simulate version update but don't change files
     """
     # Init method
     opt_summary_dict = opt_summary(local_opt=locals())
@@ -117,37 +137,49 @@ def bump_up_version(
 
     log.info("Incrementing version number")
     info_d["version"] = increment_version(
-        version_d=info_d["version"], major=major, minor=minor, micro=micro, a=a, b=b, rc=rc, post=post, dev=dev, log=log
+        version_d=info_d["version"],
+        major=major,
+        minor=minor,
+        micro=micro,
+        a=alpha,
+        b=beta,
+        rc=rc,
+        post=post,
+        dev=dev,
+        log=log,
     )
     version_str = get_version_str(info_d["version"])
 
     log.info("Update managed files")
-    update_files(
+    update_managed_files(info_d=info_d, overwrite=overwrite, dry=dry, log=log)
+    update_versipy_files(
         info_d=info_d,
         versipy_fn=versipy_fn,
         versipy_history_fn=versipy_history_fn,
         message=message,
-        overwrite_all=overwrite_all,
+        overwrite=overwrite,
+        dry=dry,
         log=log,
     )
 
     # Optional git tagging
-    if git_push:
-        log.info(f"Attempting set tag and to push files to remote repository")
+    if git_push and not dry:
+        log.info("Attempting set tag and to push files to remote repository")
         managed_files = [f for f in info_d["managed_files"].values()]
         extra_files = [versipy_fn, versipy_history_fn]
         git_files(files=managed_files + extra_files, version=version_str, message=message, log=log)
 
-    log.warning(f"Version updated: {previous_version_str} > {version_str}")
+    log.warning("Version updated: {} > {}".format(previous_version_str, version_str))
 
 
 def set_version(
     version_str: str,
     versipy_fn: str = "versipy.yaml",
     versipy_history_fn: str = "versipy_history.txt",
-    overwrite_all: bool = False,
+    overwrite: bool = False,
     git_push: bool = False,
     message: str = "Manually set version",
+    dry: bool = False,
     verbose: bool = False,
     quiet: bool = False,
     **kwargs,
@@ -162,13 +194,14 @@ def set_version(
         Path to the versipy YAML info file containing package metadata
     * versipy_history_fn
         Path to the versipy history file
-    * overwrite_all
+    * overwrite
         Do not display a confirmation message before overwriting an existing file
     * git_push
-        commit and push the files modified by versipy and set a git version tag
+        Commit and push the files modified by versipy and set a git version tag
     * message
         Message used for the history file and the git commit is used in combination with `git_push`
-    *
+    * dry
+        Dry run, simulate version update but don't change files
     """
     # Init method
     opt_summary_dict = opt_summary(local_opt=locals())
@@ -187,20 +220,22 @@ def set_version(
     version_str = get_version_str(info_d["version"])
 
     log.info("Update managed files")
-    update_files(
+    update_managed_files(info_d=info_d, overwrite=overwrite, dry=dry, log=log)
+    update_versipy_files(
         info_d=info_d,
         versipy_fn=versipy_fn,
         versipy_history_fn=versipy_history_fn,
         message=message,
-        overwrite_all=overwrite_all,
+        overwrite=overwrite,
+        dry=dry,
         log=log,
     )
 
     # Optional git tagging
-    if git_push:
-        log.info(f"Attempting set tag and to push files to remote repository")
+    if git_push and not dry:
+        log.info("Attempting set tag and to push files to remote repository")
         managed_files = [f for f in info_d["managed_files"].values()]
         extra_files = [versipy_fn, versipy_history_fn]
         git_files(files=managed_files + extra_files, version=version_str, message=message, log=log)
 
-    log.warning(f"Version updated: {previous_version_str} > {version_str}")
+    log.warning("Version updated: {} > {}".format(previous_version_str, version_str))

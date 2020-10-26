@@ -19,7 +19,7 @@ from git import Repo
 import yaml
 
 # Local imports
-# import versipy as pkg
+import versipy as pkg
 
 
 # BASIC TOOLS FUNCTIONS ################################################################################################
@@ -37,8 +37,8 @@ def stdout_print(*args):
 def opt_summary(local_opt):
     """Simplifiy option dict creation"""
     d = OrderedDict()
-    #     d["Package name"] = pkg.__name__
-    #     d["Package version"] = pkg.__version__
+    d["Package name"] = pkg.name
+    d["Package version"] = pkg.version
     d["Timestamp"] = str(datetime.datetime.now())
     for i, j in local_opt.items():
         d[i] = j
@@ -77,7 +77,7 @@ def choose_option(choices=["y", "n"], message="Choose a valid option"):
         if x in choices:
             return x
         else:
-            print(f"'{x}' is not a valid option")
+            print("{} is not a valid option".format(x))
 
 
 # LOGGING FUNCTIONS ####################################################################################################
@@ -268,7 +268,7 @@ def ordered_load_yaml(yaml_fn, Loader=yaml.Loader, **kwargs):
             d = yaml.load(stream=yaml_fp, Loader=OrderedLoader, **kwargs)
             return d
     except:
-        raise IOError(f"YAML file does not exist or is not valid: {yaml_fn}")
+        raise IOError("YAML file does not exist or is not valid: {}".format(yaml_fn))
 
 
 def ordered_dump_yaml(d, yaml_fn, Dumper=yaml.Dumper, **kwargs):
@@ -289,7 +289,7 @@ def ordered_dump_yaml(d, yaml_fn, Dumper=yaml.Dumper, **kwargs):
         with open(yaml_fn, "w") as yaml_fp:
             yaml.dump(data=d, stream=yaml_fp, Dumper=OrderedDumper, **kwargs)
     except:
-        raise IOError(f"Error while trying to dump data in file: {yaml_fn}")
+        raise IOError("Error while trying to dump data in file: {}".format(yaml_fn))
 
 
 # VERSIPY SPECIFIC FUNCTIONS ###########################################################################################
@@ -304,24 +304,24 @@ def is_canonical_version(version):
 
 def get_version_str(d):
     # minimal version
-    s = f"{d['major']}"
+    s = "{}".format(d["major"])
     # optional minor and micro numbers
     if d["minor"] is not None:
-        s += f".{d['minor']}"
+        s += ".{}".format(d["minor"])
     if d["micro"] is not None:
-        s += f".{d['micro']}"
+        s += ".{}".format(d["micro"])
     # optional release type version
     if d["rc"] is not None:
-        s += f"rc{d['rc']}"
+        s += "rc{}".format(d["rc"])
     elif d["b"] is not None:
-        s += f"b{d['b']}"
+        s += "b{}".format(d["b"])
     elif d["a"] is not None:
-        s += f"a{d['a']}"
+        s += "a{}".format(d["a"])
     # optional post and dev tags
     if d["post"] is not None:
-        s += f".post{d['post']}"
+        s += ".post{}".format(d["post"])
     if d["dev"] is not None:
-        s += f".dev{d['dev']}"
+        s += ".dev{}".format(d["dev"])
     return s
 
 
@@ -336,18 +336,18 @@ def get_versipy_yaml(versipy_fn, log):
     log.debug("Checking file structure")
     for field in ["version", "managed_values", "managed_files"]:
         if not field in info_d:
-            raise ValueError(f"Missing section '{field}' in versipy YAML file")
+            raise ValueError("Missing section '{}' in versipy YAML file".format(field))
         if not info_d[field]:
-            raise ValueError(f"Empty section '{field}' in versipy YAML file")
+            raise ValueError("Empty section '{}' in versipy YAML file".format(field))
 
     # Verify validity of version string
     log.debug("Checking version")
     for field in ["major", "minor", "micro", "a", "b", "rc", "post", "dev"]:
         if not field in info_d["version"]:
-            raise ValueError(f"Missing field '{field}' in versipy YAML file version section")
+            raise ValueError("Missing field '{}' in versipy YAML file version section".format(field))
     version_str = get_version_str(info_d["version"])
     if not is_canonical_version(version_str):
-        raise ValueError("Current version {version_str} is not a valid PEP canonical version")
+        raise ValueError("Current version {} is not a valid PEP canonical version".format(version_str))
 
     return info_d
 
@@ -468,36 +468,46 @@ def parse_version_str(version_str, log):
     return version_d
 
 
-def update_files(info_d, versipy_fn, versipy_history_fn, message, overwrite_all, log):
+def update_managed_files(info_d, overwrite, dry, log):
     """"""
     version_str = get_version_str(info_d["version"])
 
     for src_fn, dest_fn in info_d["managed_files"].items():
-        log.debug(f"Updating file {dest_fn}")
+        log.debug("Updating file {}".format(dest_fn))
 
         # Bulletproof reading and writing
         try:
             src_fp = dest_fp = None
+
             # Open template file for reading
             try:
                 src_fp = open(src_fn, "r")
             except:
-                raise IOError(f"Cannot read source Template file: {src_fn}")
+                raise IOError("Cannot read source Template file: {}".format(src_fn))
+
             # Open destination file for writing
-            try:
-                if not overwrite_all and os.path.isfile(dest_fn):
-                    choice = choose_option(choices=["y", "n"], message=f"Overwrite existing file {dest_fn} ?")
-                    if choice == "n":
-                        continue
-                dest_fp = open(dest_fn, "w")
-            except:
-                raise IOError(f"Cannot write to destination file: {dest_fn}")
+            if not dry:
+                try:
+                    if not overwrite and os.path.isfile(dest_fn):
+                        choice = choose_option(
+                            choices=["y", "n"], message="Overwrite existing file {} ?".format(dest_fn)
+                        )
+                        if choice == "n":
+                            log.debug("File {dest_fn} was skipped")
+                            continue
+                    dest_fp = open(dest_fn, "w")
+                except:
+                    raise IOError("Cannot write to destination file: {}".format(dest_fn))
 
             s = src_fp.read()
-            s = s.replace("VERSION", version_str)
+            s = s.replace("__version__", version_str)
             for k, v in info_d["managed_values"].items():
                 s = s.replace(k, v)
-            dest_fp.write(s)
+
+            if dry:
+                stdout_print(s)
+            else:
+                dest_fp.write(s)
 
         finally:
             # Try to close file pointers
@@ -508,12 +518,70 @@ def update_files(info_d, versipy_fn, versipy_history_fn, message, overwrite_all,
                     except:
                         pass
 
-    log.debug("Updating versipy template yaml file")
-    ordered_dump_yaml(info_d, versipy_fn)
 
-    log.debug("Updating versipy history file")
-    with open(versipy_history_fn, "a") as fp:
-        fp.write("{}\t{}\t{}\n".format(datetime.datetime.now(), version_str, message))
+def update_versipy_files(info_d, versipy_fn, versipy_history_fn, message, overwrite, dry, log):
+    """"""
+    version_str = get_version_str(info_d["version"])
+    if not dry:
+        choice = "y"
+        if os.path.isfile(versipy_fn) and not overwrite:
+            choice = choose_option(choices=["y", "n"], message="Overwrite existing versipy files?")
+        if choice == "n":
+            log.debug("Versipy files were not updated")
+        elif choice == "y":
+            log.debug("Updating versipy template yaml file")
+            ordered_dump_yaml(info_d, versipy_fn, Dumper=yaml.Dumper)
+            log.debug("Updating versipy history file")
+            with open(versipy_history_fn, "a") as fp:
+                fp.write("{}\t{}\t{}\n".format(datetime.datetime.now(), version_str, message))
+
+
+def get_versipy_yaml_template():
+    info_d = OrderedDict()
+
+    # Version section
+    info_d["version"] = OrderedDict()
+    info_d["version"]["major"] = 0
+    info_d["version"]["minor"] = 0
+    info_d["version"]["micro"] = 0
+    info_d["version"]["a"] = None
+    info_d["version"]["b"] = None
+    info_d["version"]["rc"] = None
+    info_d["version"]["post"] = None
+    info_d["version"]["dev"] = None
+
+    # Managed values section
+    info_d["managed_values"] = OrderedDict()
+    info_d["managed_values"]["__name__"] = ["package name"]
+    info_d["managed_values"]["__description__"] = ["package description"]
+    info_d["managed_values"]["__url__"] = ["package URL"]
+    info_d["managed_values"]["__author__"] = ["author name"]
+    info_d["managed_values"]["__author_email__"] = ["author contact email"]
+    info_d["managed_values"]["__licence__"] = ["package licence"]
+
+    # Managed files section
+    info_d["managed_files"] = OrderedDict()
+    info_d["managed_files"]["versipy_templates/setup.py"] = "setup.py"
+    info_d["managed_files"]["versipy_templates/meta.yaml"] = "meta.yaml"
+    info_d["managed_files"]["versipy_templates/__init__.py"] = "versipy/__init__.py"
+    info_d["managed_files"]["versipy_templates/README.md"] = "README.md"
+
+    return info_d
+
+
+def write_versipy_yaml(versipy_fn, overwrite, log):
+
+    info_d = versipy_info_d()
+    log_dict(info_d, log.debug, "template info dict")
+
+    # Open destination file for writing
+    log.debug("Try to dump data to YAML file {}".format(versipy_fn))
+    if not overwrite and os.path.isfile(versipy_fn):
+        choice = choose_option(choices=["y", "n"], message="Overwrite existing file {} ?".format(versipy_fn))
+        if choice == "n":
+            log.debug("File {} was skipped".format(versipy_fn))
+            return
+    ordered_dump_yaml(info_d, versipy_fn, Dumper=yaml.Dumper)
 
 
 def git_files(files, version, message, log):
@@ -536,41 +604,3 @@ def git_files(files, version, message, log):
     except Exception as E:
         log.info("Failed to push to remote")
         log.debug(type(E), str(E))
-
-
-def make_versipy_template(versipy_fn="versipy.yaml", overwrite=False):
-    info_d = OrderedDict()
-
-    # Version section
-    info_d["version"] = OrderedDict()
-    info_d["version"]["major"] = 0
-    info_d["version"]["minor"] = 0
-    info_d["version"]["micro"] = 0
-    info_d["version"]["alpha"] = None
-    info_d["version"]["beta"] = None
-    info_d["version"]["rc"] = None
-    info_d["version"]["post"] = None
-    info_d["version"]["dev"] = None
-
-    # Managed values section
-    info_d["managed_values"] = OrderedDict()
-    info_d["managed_values"]["NAME"] = ["package name"]
-    info_d["managed_values"]["DESCRIPTION"] = ["package description"]
-    info_d["managed_values"]["URL"] = ["package URL"]
-    info_d["managed_values"]["AUTHOR"] = ["author name"]
-    info_d["managed_values"]["EMAIL"] = ["author contact"]
-    info_d["managed_values"]["LICENSE"] = ["licence"]
-
-    # Managed files section
-    info_d["managed_files"] = OrderedDict()
-    info_d["managed_files"]["versipy_templates/setup.py"] = "setup.py"
-    info_d["managed_files"]["versipy_templates/meta.yaml"] = "meta.yaml"
-    info_d["managed_files"]["versipy_templates/__init__.py"] = "versipy/__init__.py"
-
-    if not overwrite and os.path.isfile(versipy_fn):
-        raise ValueError("template yaml file already exist. Rerun with 'overwrite' option to replace existing file")
-    ordered_dump_yaml(info_d, versipy_fn, Dumper=yaml.Dumper)
-
-
-def generate_versipy_yaml(versipy_fn, log):
-    pass
