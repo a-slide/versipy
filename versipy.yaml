@@ -17,7 +17,7 @@ managed_values:
   __author_url__: https://adrienleger.com/
   __licence__: GPLv3
   __licence_url__: https://www.gnu.org/licenses/gpl-3.0.en.html
-  __minimal_python__: '3.6'
+  __minimal_python__: '>=3.6'
   __entry_point1__: versipy=versipy.__main__:main
   __dependency1__: colorlog>=4.1.0
   __dependency2__: pyyaml>=5.3.1
