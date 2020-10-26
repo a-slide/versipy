@@ -1,0 +1,33 @@
+package:
+  name: {{ versipy|lower }}
+  version: 0.0
+
+source:
+  path: dist/versipy-0.0.tar.gz
+
+build:
+  number: 0
+  script: "pip install versipy-0.0.tar.gz --no-deps --ignore-installed -vv"
+  entry_points:
+    - versipy=versipy.__main__:main
+  noarch: "python"
+
+requirements:
+  build:
+    - python>=>=3.6
+    - pip>=19.2.1
+    - ripgrep>=11.0.1
+  run:
+    - colorlog>=4.1.0
+    - pyyaml>=5.3.1
+    - gitpython>=3.1.9
+about:
+  home: https://github.com/a-slide/versipy
+  license: GPLv3
+  licence_url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  summary: Versatile version and medatada managment across the python packaging ecosystem, integrated with git
+
+extra:
+  author: Adrien Leger
+  author_email: contact@adrienleger.com
+  author_url: adrienleger.com

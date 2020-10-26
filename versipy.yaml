@@ -1,27 +1,34 @@
 version:
   major: 0
-  minor: 1
-  micro: 3
+  minor: 0
+  micro: null
   a: null
   b: null
   rc: null
-  post: 1
+  post: null
   dev: null
 managed_values:
-  NAME: versipy
-  DESCRIPTION: Flexible python version and medatada managment across the python packaging
-    ecosystem and integrated with git
-  URL: https://github.com/a-slide/versipy
-  AUTHOR: Adrien Leger
-  EMAIL: contact AT adrienleger DOT com
-  LICENSE: MIT
-  MINIMAL_PYTHON: '>=3.6'
-  ENTRY_POINT_1: versipy=versipy.__main__:main
-  DEPENDENCY_1: colorlog>=4.1.0
-  DEPENDENCY_2: pyyaml>=5.3.1
-  DEPENDENCY_3: gitpython>=3.1.9
+  __name__: versipy
+  __description__: Versatile version and medatada managment across the python packaging
+    ecosystem, integrated with git
+  __url__: https://github.com/a-slide/versipy
+  __author__: Adrien Leger
+  __author_email__: contact@adrienleger.com
+  __author_url__: adrienleger.com
+  __licence__: GPLv3
+  __licence_url__: https://www.gnu.org/licenses/gpl-3.0.en.html
+  __minimal_python__: '>=3.6'
+  __entry_point1__: versipy=versipy.__main__:main
+  __dependency1__: colorlog>=4.1.0
+  __dependency2__: pyyaml>=5.3.1
+  __dependency3__: gitpython>=3.1.9
+  __classifiers_1__: 'Development Status :: 3 - Alpha'
+  __classifiers_2__: 'Intended Audience :: Science/Research'
+  __classifiers_3__: 'Topic :: Scientific/Engineering :: Bio-Informatics'
+  __classifiers_4__: 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
+  __classifiers_5__: 'Programming Language :: Python :: 3'
 managed_files:
   versipy_templates/setup.py: setup.py
   versipy_templates/meta.yaml: meta.yaml
   versipy_templates/__init__.py: versipy/__init__.py
-   versipy_templates/README.md: README.md
+  versipy_templates/README.md: README.md

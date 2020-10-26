@@ -1,2 +1,0 @@
-2020-10-23 16:23:06.552423	0.1.2a2.dev1	Manually set version
-2020-10-23 16:23:24.301822	0.1.3.post1	Versipy auto bump-up
