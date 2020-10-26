@@ -15,36 +15,37 @@ deploy:
     password: "$PYPI_PW"
     server: https://test.pypi.org/legacy/
     on:
-      branch: dev
       tags: true
+      condition: "$TRAVIS_TAG =~ ^*.dev$"
 
-  - provider: pypi
-    skip_cleanup: true
-    user: aleg
-    password: "$PYPI_PW"
-    on:
-      branch: master
-      tags: true
+  # - provider: pypi
+  #   skip_cleanup: true
+  #   user: aleg
+  #   password: "$PYPI_PW"
+  #   on:
+  #     tags: true
+  #     all_branches: true
+  #     condition: "$TRAVIS_TAG =~ ^release.*$"
 
   # Deploy to Anaconda
   - provider: script
     skip_cleanup: true
     script: bash ./deploy_anaconda.sh $ANACONDA_DEV_TOKEN
     on:
-      branch: dev
       tags: true
+      condition: "$TRAVIS_TAG =~ ^*.dev$"
 
-  - provider: script
-    skip_cleanup: true
-    script: bash ./deploy_anaconda.sh $ANACONDA_TOKEN
-    on:
-      branch: master
-      tags: true
+  # - provider: script
+  #   skip_cleanup: true
+  #   script: bash ./deploy_anaconda.sh $ANACONDA_TOKEN
+  #   on:
+  #     branch: master
+  #     tags: true
 
-  # Deploy release to github
-  - provider: releases
-    api_key: $GITHUB_TOKEN
-    skip_cleanup: true
-    on:
-      branch: master
-      tags: true
+  # # Deploy release to github
+  # - provider: releases
+  #   api_key: $GITHUB_TOKEN
+  #   skip_cleanup: true
+  #   on:
+  #     branch: master
+  #     tags: true
