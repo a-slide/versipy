@@ -1,4 +1,4 @@
-# versipy v0.0
+# versipy v0.1.dev1
 
 ![versipy](pictures/versipy.png)
 

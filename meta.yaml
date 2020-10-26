@@ -1,13 +1,13 @@
 package:
   name: {{ versipy|lower }}
-  version: 0.0
+  version: 0.1.dev1
 
 source:
-  path: dist/versipy-0.0.tar.gz
+  path: dist/versipy-0.1.dev1.tar.gz
 
 build:
   number: 0
-  script: "pip install versipy-0.0.tar.gz --no-deps --ignore-installed -vv"
+  script: "pip install versipy-0.1.dev1.tar.gz --no-deps --ignore-installed -vv"
   entry_points:
     - versipy=versipy.__main__:main
   noarch: "python"
