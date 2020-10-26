@@ -3,3 +3,4 @@
 2020-10-26 22:44:40.817528	0.1.dev3	Fix conda meta yaml
 2020-10-26 23:16:06.165702	0.1.dev4	Fix conda meta yaml
 2020-10-26 23:20:26.818470	0.1.dev5	Conditional deployment on tag
+2020-10-26 23:23:37.318020	0.1.dev6	Conditional deployment on tag
