@@ -227,7 +227,10 @@ def arg_from_docstr(parser, func, arg_name, short_name=None):
             arg_dict["help"] += " (required)"
 
         if "type" in arg_dict:
-            arg_dict["help"] += " [%(type)s]"
+            if arg_dict["type"] == bool:
+                arg_dict["help"] += " [boolean]"
+            else:
+                arg_dict["help"] += " [%(type)s]"
 
     # Special case for boolean args
     if arg_dict["type"] == bool:
