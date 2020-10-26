@@ -1,31 +1,33 @@
 package:
-  name: {{ NAME|lower }}
-  version: {{ VERSION }}
+  name: {{ __name__|lower }}
+  version: __version__
 
 source:
-  path: dist/{{ NAME }}-{{ VERSION }}.tar.gz
+  path: dist/__name__-__version__.tar.gz
 
 build:
   number: 0
-  script: "pip install {{ NAME }}-{{ VERSION }}.tar.gz --no-deps --ignore-installed -vv"
+  script: "pip install __name__-__version__.tar.gz --no-deps --ignore-installed -vv"
   entry_points:
-    - ENTRY_POINT_1
+    - __entry_point1__
   noarch: "python"
 
 requirements:
   build:
-    - python>=MINIMAL_PYTHON
+    - python>=__minimal_python__
     - pip>=19.2.1
     - ripgrep>=11.0.1
   run:
-    - DEPENDENCY_1
-    - DEPENDENCY_2
-    - DEPENDENCY_3
+    - __dependency1__
+    - __dependency2__
+    - __dependency3__
 about:
-  home: URL
-  license: LICENSE
-  summary: DESCRIPTION
+  home: __url__
+  license: __licence__
+  licence_url: __licence_url__
+  summary: __description__
 
 extra:
-  author: AUTHOR
-  email: EMAIL
+  author: __author__
+  author_email: __author_email__
+  author_url: __author_url__
