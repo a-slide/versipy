@@ -6,7 +6,7 @@ version:
   b: null
   rc: null
   post: null
-  dev: 2
+  dev: 3
 managed_values:
   __name__: versipy
   __description__: Versatile version and medatada managment across the python packaging

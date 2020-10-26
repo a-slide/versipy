@@ -1,2 +1,3 @@
 2020-10-26 22:19:12.540463	0.1.dev1	First versipy bump up + git test
 2020-10-26 22:30:47.046078	0.1.dev2	Try to fix travis trigger
+2020-10-26 22:44:40.817528	0.1.dev3	Fix conda meta yaml

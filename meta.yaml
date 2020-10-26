@@ -1,13 +1,17 @@
+{% set version = "0.1.dev3" %}
+{% set name = "versipy" %}
+
 package:
-  name: {{ versipy|lower }}
-  version: 0.1.dev2
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-  path: dist/versipy-0.1.dev2.tar.gz
+  path: dist/{{ name }}-{{ version }}.tar.gz
 
 build:
   number: 0
-  script: "pip install versipy-0.1.dev2.tar.gz --no-deps --ignore-installed -vv"
+  script: "pip install {{ name }}-{{ version }}.tar.gz --no-deps --ignore-installed -vv "
+
   entry_points:
     - versipy=versipy.__main__:main
   noarch: "python"
