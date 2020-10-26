@@ -17,7 +17,7 @@ deploy:
     on:
       all_branches: true
       tags: true
-      condition: "$TRAVIS_TAG =~ ^*.dev*$"
+      condition: $TRAVIS_TAG =~ *dev*
 
   # - provider: pypi
   #   skip_cleanup: true
@@ -35,7 +35,7 @@ deploy:
     on:
       all_branches: true
       tags: true
-      condition: "$TRAVIS_TAG =~ ^*.dev*$"
+      condition: $TRAVIS_TAG =~ *dev*
 
   # - provider: script
   #   skip_cleanup: true
