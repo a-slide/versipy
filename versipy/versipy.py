@@ -27,6 +27,10 @@ def init_repo(versipy_fn: str = "versipy.yaml", verbose: bool = False, quiet: bo
     log.warning("Checking options and input files")
     log_dict(opt_summary_dict, log.debug, "Options summary")
 
+    generate_versipy_yaml(versipy_fn=versipy_fn, log=log)
+
+    # Create example templates ?
+
 
 def current_version(versipy_fn: str = "versipy.yaml", verbose: bool = False, quiet: bool = False, **kwargs):
     """

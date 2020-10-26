@@ -521,9 +521,7 @@ def git_files(files, version, message, log):
     try:
         log.debug("Acquire local repository")
         repo = Repo()
-        remote = repo.remote(
-            "origin"
-        )  ################################################################################# Check this
+        remote = repo.remote("origin")  ################################# Check this
 
         log.debug("Add, commit and push version files")
         for f in files:
@@ -572,3 +570,7 @@ def make_versipy_template(versipy_fn="versipy.yaml", overwrite=False):
     if not overwrite and os.path.isfile(versipy_fn):
         raise ValueError("template yaml file already exist. Rerun with 'overwrite' option to replace existing file")
     ordered_dump_yaml(info_d, versipy_fn, Dumper=yaml.Dumper)
+
+
+def generate_versipy_yaml(versipy_fn, log):
+    pass
