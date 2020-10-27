@@ -1,5 +1,5 @@
-{% set version = "__version__" %}
-{% set name = "__name__" %}
+{% set version = "__package_version__" %}
+{% set name = "__package_name__" %}
 
 package:
   name: {{ name|lower }}
@@ -26,12 +26,12 @@ requirements:
     - __dependency2__
     - __dependency3__
 about:
-  home: __url__
-  license: __licence__
-  licence_url: __licence_url__
-  summary: __description__
+  home: __package_url__
+  license: __package_licence__
+  licence_url: __package_licence_url__
+  summary: __package_description__
 
 extra:
-  author: __author__
+  author: __author_name__
   author_email: __author_email__
   author_url: __author_url__

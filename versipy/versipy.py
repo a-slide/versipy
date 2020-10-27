@@ -44,7 +44,7 @@ def init_repo(
         info_d=info_d,
         versipy_fn=versipy_fn,
         versipy_history_fn=versipy_history_fn,
-        message="Initialise versipy history",
+        comment="Initialise versipy history",
         overwrite=overwrite,
         dry=False,
         log=log,
@@ -85,7 +85,8 @@ def bump_up_version(
     versipy_history_fn: str = "versipy_history.txt",
     overwrite: bool = False,
     git_push: bool = False,
-    message: str = "Versipy auto bump-up",
+    git_tag: bool = False,
+    comment: str = "Versipy auto bump-up",
     dry: bool = False,
     verbose: bool = False,
     quiet: bool = False,
@@ -120,8 +121,10 @@ def bump_up_version(
         Do not display a confirmation message before overwriting an existing file
     * git_push
         Commit and push the files modified by versipy and set a git version tag
-    * message
-        Message used for the history file and the git commit is used in combination with `git_push`
+    * git_tag
+        Create and publish a git tag corresponding to the new version (requires git_push to be set)
+    * comment
+        Comment used for the history file and the git commit is used in combination with `git_push`
     * dry
         Dry run, simulate version update but don't change files
     """
@@ -158,18 +161,18 @@ def bump_up_version(
         info_d=info_d,
         versipy_fn=versipy_fn,
         versipy_history_fn=versipy_history_fn,
-        message=message,
+        comment=comment,
         overwrite=overwrite,
         dry=dry,
         log=log,
     )
 
     # Optional git tagging
-    if git_push and not dry:
+    if not dry and git_push:
         log.info("Attempting set tag and to push files to remote repository")
         managed_files = [f for f in info_d["managed_files"].values()]
         extra_files = [versipy_fn, versipy_history_fn]
-        git_files(files=managed_files + extra_files, version=version_str, message=message, log=log)
+        git_files(files=managed_files + extra_files, version=version_str, comment=comment, git_tag=git_tag, log=log)
 
     log.warning("Version updated: {} > {}".format(previous_version_str, version_str))
 
@@ -180,7 +183,8 @@ def set_version(
     versipy_history_fn: str = "versipy_history.txt",
     overwrite: bool = False,
     git_push: bool = False,
-    message: str = "Manually set version",
+    git_tag: bool = False,
+    comment: str = "Manually set version",
     dry: bool = False,
     verbose: bool = False,
     quiet: bool = False,
@@ -200,8 +204,10 @@ def set_version(
         Do not display a confirmation message before overwriting an existing file
     * git_push
         Commit and push the files modified by versipy and set a git version tag
-    * message
-        Message used for the history file and the git commit is used in combination with `git_push`
+    * git_tag
+        Create and publish a git tag corresponding to the new version (requires git_push to be set)
+    * comment
+        Comment used for the history file and the git commit is used in combination with `git_push`
     * dry
         Dry run, simulate version update but don't change files
     """
@@ -227,7 +233,7 @@ def set_version(
         info_d=info_d,
         versipy_fn=versipy_fn,
         versipy_history_fn=versipy_history_fn,
-        message=message,
+        comment=comment,
         overwrite=overwrite,
         dry=dry,
         log=log,
@@ -238,6 +244,6 @@ def set_version(
         log.info("Attempting set tag and to push files to remote repository")
         managed_files = [f for f in info_d["managed_files"].values()]
         extra_files = [versipy_fn, versipy_history_fn]
-        git_files(files=managed_files + extra_files, version=version_str, message=message, log=log)
+        git_files(files=managed_files + extra_files, version=version_str, comment=comment, git_tag=git_tag, log=log)
 
     log.warning("Version updated: {} > {}".format(previous_version_str, version_str))

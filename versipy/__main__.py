@@ -16,8 +16,8 @@ def main(args=None):
     """ Main entry point for versipy command line interface"""
 
     # Parser and subparsers for command
-    parser = argparse.ArgumentParser(description=pkg.description)
-    parser.add_argument("--version", action="version", version="{} v{}".format(pkg.name, pkg.version))
+    parser = argparse.ArgumentParser(description=pkg.__description__)
+    parser.add_argument("--version", action="version", version="{} v{}".format(pkg.__name__, pkg.__version__))
     subparsers = parser.add_subparsers(description="%(prog)s implements the following subcommands", dest="subcommands")
     subparsers.required = True
 
@@ -53,7 +53,8 @@ def main(args=None):
     arg_from_docstr(sp_bv_io, f, "overwrite", "o")
     sp_bv_ms = sp_bv.add_argument_group("Misc options")
     arg_from_docstr(sp_bv_ms, f, "git_push", "g")
-    arg_from_docstr(sp_bv_ms, f, "message", "t")
+    arg_from_docstr(sp_bv_ms, f, "git_tag", "t")
+    arg_from_docstr(sp_bv_ms, f, "comment", "c")
     arg_from_docstr(sp_bv_ms, f, "dry")
 
     f = set_version
@@ -67,7 +68,8 @@ def main(args=None):
     arg_from_docstr(sp_sv_io, f, "overwrite", "o")
     sp_sv_ms = sp_sv.add_argument_group("Misc options")
     arg_from_docstr(sp_sv_ms, f, "git_push", "g")
-    arg_from_docstr(sp_sv_ms, f, "message", "t")
+    arg_from_docstr(sp_bv_ms, f, "git_tag", "t")
+    arg_from_docstr(sp_sv_ms, f, "comment", "c")
     arg_from_docstr(sp_sv_ms, f, "dry")
 
     # Add common group parsers

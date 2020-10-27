@@ -37,8 +37,8 @@ def stdout_print(*args):
 def opt_summary(local_opt):
     """Simplifiy option dict creation"""
     d = OrderedDict()
-    d["Package name"] = pkg.name
-    d["Package version"] = pkg.version
+    d["Package name"] = pkg.__name__
+    d["Package version"] = pkg.__version__
     d["Timestamp"] = str(datetime.datetime.now())
     for i, j in local_opt.items():
         d[i] = j
@@ -503,7 +503,7 @@ def update_managed_files(info_d, overwrite, dry, log):
                     raise IOError("Cannot write to destination file: {}".format(dest_fn))
 
             s = src_fp.read()
-            s = s.replace("__version__", version_str)
+            s = s.replace("__package_version__", version_str)
             for k, v in info_d["managed_values"].items():
                 s = s.replace(k, v)
 
@@ -522,7 +522,7 @@ def update_managed_files(info_d, overwrite, dry, log):
                         pass
 
 
-def update_versipy_files(info_d, versipy_fn, versipy_history_fn, message, overwrite, dry, log):
+def update_versipy_files(info_d, versipy_fn, versipy_history_fn, comment, overwrite, dry, log):
     """"""
     version_str = get_version_str(info_d["version"])
     if not dry:
@@ -536,7 +536,7 @@ def update_versipy_files(info_d, versipy_fn, versipy_history_fn, message, overwr
             ordered_dump_yaml(info_d, versipy_fn, Dumper=yaml.Dumper)
             log.debug("Updating versipy history file")
             with open(versipy_history_fn, "a") as fp:
-                fp.write("{}\t{}\t{}\n".format(datetime.datetime.now(), version_str, message))
+                fp.write("{}\t{}\t{}\n".format(datetime.datetime.now(), version_str, comment))
 
 
 def get_versipy_yaml_template():
@@ -555,12 +555,12 @@ def get_versipy_yaml_template():
 
     # Managed values section
     info_d["managed_values"] = OrderedDict()
-    info_d["managed_values"]["__name__"] = ["package name"]
-    info_d["managed_values"]["__description__"] = ["package description"]
-    info_d["managed_values"]["__url__"] = ["package URL"]
-    info_d["managed_values"]["__author__"] = ["author name"]
-    info_d["managed_values"]["__author_email__"] = ["author contact email"]
-    info_d["managed_values"]["__licence__"] = ["package licence"]
+    info_d["managed_values"]["__package_name__"] = "package name"
+    info_d["managed_values"]["__package_description__"] = "package description"
+    info_d["managed_values"]["__package_url__"] = "package URL"
+    info_d["managed_values"]["__package_licence__"] = "package licence"
+    info_d["managed_values"]["__author_name__"] = "author name"
+    info_d["managed_values"]["__author_email__"] = "author contact email"
 
     # Managed files section
     info_d["managed_files"] = OrderedDict()
@@ -584,25 +584,26 @@ def write_versipy_yaml(versipy_fn, overwrite, log):
         if choice == "n":
             log.debug("File {} was skipped".format(versipy_fn))
             return
-    ordered_dump_yaml(info_d, versipy_fn, Dumper=yaml.Dumper)
+    ordered_dump_yaml(info_d, versipy_fn)
 
 
-def git_files(files, version, message, log):
+def git_files(files, version, comment, git_tag, log):
     """"""
     try:
         log.debug("Acquire local repository")
         repo = Repo()
-        remote = repo.remote("origin")  ################################# Check this
+        remote = repo.remote("origin")
 
         log.debug("Add, commit and push version files")
         for f in files:
             repo.index.add(f)
-        commit = repo.index.commit(message=message)
+        commit = repo.index.commit(message=comment)
         push = remote.push()
 
-        log.debug("Set and push new version tag")
-        tag = repo.create_tag(version, message=message)
-        push = remote.push(tag)
+        if git_tag:
+            log.debug("Set and push new version tag")
+            tag = repo.create_tag(version, message=comment)
+            push = remote.push(tag)
 
     except Exception as E:
         log.info("Failed to push to remote")
