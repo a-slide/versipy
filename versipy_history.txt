@@ -14,3 +14,4 @@
 2020-10-27 16:11:49.796536	0.2.3	local test
 2020-10-27 16:15:31.935959	0.2.3.dev1	local test
 2020-10-27 16:29:35.809467	0.2.3.dev2	Update doc and formatting changes
+2020-10-27 16:34:43.746265	0.2.4	Update doc and formatting changes

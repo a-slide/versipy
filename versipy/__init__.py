@@ -1,5 +1,5 @@
 __name__ = "versipy"
-__version__ = "0.2.3.dev2"
+__version__ = "0.2.4"
 __description__ = "Versatile version and medatada managment across the python packaging with git integration ecosystem, integrated with git"
 __url__ = "https://github.com/a-slide/versipy"
 __licence__ = "GPLv3"
