@@ -1,12 +1,12 @@
 version:
   major: 0
-  minor: 1
+  minor: 2
   micro: null
   a: null
   b: null
   rc: null
   post: null
-  dev: 9
+  dev: null
 managed_values:
   __name__: versipy
   __description__: Versatile version and medatada managment across the python packaging
