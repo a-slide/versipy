@@ -1,5 +1,5 @@
 name = "versipy"
-version = "0.2"
+version = "0.2.dev1"
 description = "Versatile version and medatada managment across the python packaging ecosystem, integrated with git"
 url = "https://github.com/a-slide/versipy"
 licence = "GPLv3"
