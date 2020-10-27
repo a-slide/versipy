@@ -8,7 +8,7 @@ script: true
 
 deploy:
 
-  # Deploy package to pypy
+  # Development / test deployment
   - provider: pypi
     skip_cleanup: true
     user: aleg
@@ -19,6 +19,16 @@ deploy:
       tags: true
       condition: $TRAVIS_TAG == *.dev*
 
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy_anaconda.sh $ANACONDA_DEV_TOKEN
+    on:
+      all_branches: true
+      tags: true
+      condition: $TRAVIS_TAG == *.dev*
+
+
+  # Production version deployment
   - provider: pypi
     skip_cleanup: true
     user: aleg
@@ -28,27 +38,18 @@ deploy:
       all_branches: true
       condition: $TRAVIS_TAG != *.dev*
 
-  # # Deploy to Anaconda
-  # - provider: script
-  #   skip_cleanup: true
-  #   script: bash ./deploy_anaconda.sh $ANACONDA_DEV_TOKEN
-  #   on:
-  #     all_branches: true
-  #     tags: true
-  #     condition: $TRAVIS_TAG == *.dev*
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy_anaconda.sh $ANACONDA_TOKEN
+    on:
+      tags: true
+      all_branches: true
+      condition: $TRAVIS_TAG != *.dev*
 
-
-  # - provider: script
-  #   skip_cleanup: true
-  #   script: bash ./deploy_anaconda.sh $ANACONDA_TOKEN
-  #   on:
-  #     branch: master
-  #     tags: true
-
-  # # Deploy release to github
-  # - provider: releases
-  #   api_key: $GITHUB_TOKEN
-  #   skip_cleanup: true
-  #   on:
-  #     branch: master
-  #     tags: true
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    skip_cleanup: true
+    on:
+      tags: true
+      all_branches: true
+      condition: $TRAVIS_TAG != *.dev*
