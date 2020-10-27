@@ -1,16 +1,16 @@
 version:
   major: 0
   minor: 2
-  micro: 2
+  micro: 3
   a: null
   b: null
   rc: null
   post: null
-  dev: null
+  dev: 1
 managed_values:
   __package_name__: versipy
-  __description__: Versatile version and medatada managment across the python packaging with git integration
-    ecosystem, integrated with git
+  __package_description__: Versatile version and medatada managment across the python
+    packaging with git integration ecosystem, integrated with git
   __package_url__: https://github.com/a-slide/versipy
   __author_name__: Adrien Leger
   __author_email__: contact@adrienleger.com
@@ -27,7 +27,8 @@ managed_values:
   __classifiers_3__: 'Topic :: Scientific/Engineering :: Bio-Informatics'
   __classifiers_4__: 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
   __classifiers_5__: 'Programming Language :: Python :: 3'
-  __citation__: 'Adrien Leger. (2020, October 27). a-slide/versipy 0.2.2 (Version 0.2.2). Zenodo. http://doi.org/10.5281/zenodo.4139248'
+  __citation__: Adrien Leger. (2020, October 27). a-slide/versipy 0.2.2 (Version 0.2.2).
+    Zenodo. http://doi.org/10.5281/zenodo.4139248
 managed_files:
   versipy_templates/setup.py: setup.py
   versipy_templates/meta.yaml: meta.yaml

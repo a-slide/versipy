@@ -9,7 +9,7 @@ import sys
 # Local imports
 import versipy as pkg
 from versipy.common import *
-from versipy.versipy import init_repo, current_version, bump_up_version, set_version  # ,  git_tag
+from versipy.versipy import init_repo, current_version, bump_up_version, set_version
 
 # ~~~~~~~~~~~~~~TOP LEVEL ENTRY POINT~~~~~~~~~~~~~~#
 def main(args=None):
@@ -68,7 +68,7 @@ def main(args=None):
     arg_from_docstr(sp_sv_io, f, "overwrite", "o")
     sp_sv_ms = sp_sv.add_argument_group("Misc options")
     arg_from_docstr(sp_sv_ms, f, "git_push", "g")
-    arg_from_docstr(sp_bv_ms, f, "git_tag", "t")
+    arg_from_docstr(sp_sv_ms, f, "git_tag", "t")
     arg_from_docstr(sp_sv_ms, f, "comment", "c")
     arg_from_docstr(sp_sv_ms, f, "dry")
 
