@@ -1,4 +1,4 @@
-{% set version = "0.2.4" %}
+{% set version = "0.2.4.post1" %}
 {% set name = "versipy" %}
 
 package:
@@ -29,7 +29,7 @@ about:
   home: https://github.com/a-slide/versipy
   license: GPLv3
   licence_url: https://www.gnu.org/licenses/gpl-3.0.en.html
-  summary: Versatile version and medatada managment across the python packaging with git integration ecosystem, integrated with git
+  summary: Versatile version and medatada managment across the python packaging ecosystem with git integration
 
 extra:
   author: Adrien Leger

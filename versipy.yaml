@@ -5,11 +5,12 @@ version:
   a: null
   b: null
   rc: null
-  post: null
+  post: 1
   dev: null
 managed_values:
   __package_name__: versipy
-  __package_description__: Versatile version and medatada managment across the python packaging ecosystem with git integration
+  __package_description__: Versatile version and medatada managment across the python
+    packaging ecosystem with git integration
   __package_url__: https://github.com/a-slide/versipy
   __author_name__: Adrien Leger
   __author_email__: contact@adrienleger.com

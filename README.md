@@ -1,4 +1,4 @@
-# versipy v0.2.4
+# versipy v0.2.4.post1
 
 ![](pictures/versipy.png)
 
@@ -14,7 +14,7 @@
 
 ---
 
-**Versatile version and medatada managment across the python packaging with git integration ecosystem, integrated with git**
+**Versatile version and medatada managment across the python packaging ecosystem with git integration**
 
 ---
 
