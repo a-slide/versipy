@@ -9,3 +9,4 @@
 2020-10-27 10:43:05.513132	0.1.dev9	Conditional deployment on tag
 2020-10-27 10:43:51.392048	0.2	Conditional deployment on tag release test
 2020-10-27 10:49:37.453854	0.2.dev1	Conditional deployment on tag full deploy test
+2020-10-27 10:50:04.246385	0.2.1	Conditional deployment on tag full deploy test
