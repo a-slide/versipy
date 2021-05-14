@@ -510,17 +510,17 @@ def update_managed_files(info_d, overwrite, dry, log):
                     """
                     Let me explain the ugliest regex in the world. Note that curly braces are doubled for escaping
                     __@{{                  Literal
-                    ((?!::)[^}}]*)         Not :: and not }
+                    ((?!::)[^}}]*)         Not :: and not }  ->  captured as group 1 (separator)
                     ::                     Literal
-                    (((?!{key_name}).)*)   Not key_name
+                    (((?!{key_name}).)*)   Not key_name      ->  captured as group 2 (prefix)
                     {key_name}             Literally key_name
-                    ([^}}]*)               Not curly brace
+                    ([^}}]*)               Not curly brace   ->  captured as group 3 (suffix)
                     }}__                   Literal
                     
                     So it looks for a string built like:
-                    __@{<A>::<B>key_name<C>}__
+                    __@{<SEP>::<PRE>key_name<SUF>}__
                     and will replace it with:
-                    <B>value1<C><A><B>value2<C><A><B>value3<C>
+                    <PRE>value1<SUF><SEP><PRE>value2<SUF><SEP><PRE>value3<SUF>
                     
                     The regex works for multiple ocurrences.
                     
