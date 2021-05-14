@@ -19,8 +19,8 @@ build:
 requirements:
   build:
     - python__minimal_python__
-    - __@{
-    - ::dependencies}__
+    - pip>=19.2.1
+    - ripgrep>=11.0.1
   run:
     - __@{
     - ::dependencies}__

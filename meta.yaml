@@ -19,9 +19,8 @@ build:
 requirements:
   build:
     - python>=3.6
-    - colorlog>=4.1.0
-    - pyyaml>=5.3.1
-    - gitpython>=3.1.9
+    - pip>=19.2.1
+    - ripgrep>=11.0.1
   run:
     - colorlog>=4.1.0
     - pyyaml>=5.3.1
