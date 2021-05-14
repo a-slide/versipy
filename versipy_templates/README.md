@@ -65,9 +65,8 @@ conda update -c aleg -c anaconda -c bioconda -c conda-forge versipy
 
 The following dependencies are required but automatically installed with pip or conda package manager
 
-- __dependency1__
-- __dependency2__
-- __dependency3__
+ - __@{ 
+ - ::dependencies}__
 
 ## Usage
 
@@ -183,11 +182,8 @@ deploy:
 
 ## Classifiers
 
-* __classifiers_1__
-* __classifiers_2__
-* __classifiers_3__
-* __classifiers_4__
-* __classifiers_5__
+* __@{ 
+* ::classifiers}__
 
 ## citation
 

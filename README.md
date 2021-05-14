@@ -1,4 +1,4 @@
-# versipy v0.2.4.post1
+# versipy v0.2.5
 
 ![](pictures/versipy.png)
 
@@ -65,9 +65,9 @@ conda update -c aleg -c anaconda -c bioconda -c conda-forge versipy
 
 The following dependencies are required but automatically installed with pip or conda package manager
 
-- colorlog>=4.1.0
-- pyyaml>=5.3.1
-- gitpython>=3.1.9
+ - colorlog>=4.1.0 
+ - pyyaml>=5.3.1 
+ - gitpython>=3.1.9
 
 ## Usage
 
@@ -183,10 +183,10 @@ deploy:
 
 ## Classifiers
 
-* Development Status :: 3 - Alpha
-* Intended Audience :: Science/Research
-* Topic :: Scientific/Engineering :: Bio-Informatics
-* License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+* Development Status :: 3 - Alpha 
+* Intended Audience :: Science/Research 
+* Topic :: Scientific/Engineering :: Bio-Informatics 
+* License :: OSI Approved :: GNU General Public License v3 (GPLv3) 
 * Programming Language :: Python :: 3
 
 ## citation

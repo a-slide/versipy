@@ -85,7 +85,7 @@ def choose_option(choices=["y", "n"], message="Choose a valid option"):
 
 def get_logger(name=None, verbose=False, quiet=False):
     """Multilevel colored log using colorlog"""
-
+    
     # Define conditional color formatter
     formatter = colorlog.LevelFormatter(
         fmt={
@@ -104,12 +104,12 @@ def get_logger(name=None, verbose=False, quiet=False):
         },
         reset=True,
     )
-
+    
     # Define logger with custom formatter
     logging.basicConfig(format="%(message)s")
     logging.getLogger().handlers[0].setFormatter(formatter)
     log = logging.getLogger(name)
-
+    
     # Define logging level depending on verbosity
     if verbose:
         log.setLevel(logging.DEBUG)
@@ -117,7 +117,7 @@ def get_logger(name=None, verbose=False, quiet=False):
         log.setLevel(logging.WARNING)
     else:
         log.setLevel(logging.INFO)
-
+    
     return log
 
 
@@ -150,10 +150,10 @@ def log_list(l, logger, header="", indent="\t"):
 
 def doc_func(func):
     """Parse the function description string"""
-
+    
     if inspect.isclass(func):
         func = func.__init__
-
+    
     docstr_list = []
     for l in inspect.getdoc(func).split("\n"):
         l = l.strip()
@@ -162,17 +162,17 @@ def doc_func(func):
                 break
             else:
                 docstr_list.append(l)
-
+    
     return " ".join(docstr_list)
 
 
 def make_arg_dict(func):
     """Parse the arguments default value, type and doc"""
-
+    
     # Init method for classes
     if inspect.isclass(func):
         func = func.__init__
-
+    
     if inspect.isfunction(func) or inspect.ismethod(func):
         # Parse arguments default values and annotations
         d = OrderedDict()
@@ -188,7 +188,7 @@ def make_arg_dict(func):
                         d[name]["required"] = True
                     else:
                         d[name]["default"] = p.default
-
+        
         # Parse the docstring in a dict
         docstr_dict = OrderedDict()
         lab = None
@@ -200,7 +200,7 @@ def make_arg_dict(func):
                     docstr_dict[lab] = []
                 elif lab:
                     docstr_dict[lab].append(l)
-
+        
         # Concatenate and copy doc in main dict
         for name in d.keys():
             if name in docstr_dict:
@@ -210,12 +210,12 @@ def make_arg_dict(func):
 
 def arg_from_docstr(parser, func, arg_name, short_name=None):
     """Get options corresponding to argument name from docstring and deal with special cases"""
-
+    
     if short_name:
         arg_names = ["-{}".format(short_name), "--{}".format(arg_name)]
     else:
         arg_names = ["--{}".format(arg_name)]
-
+    
     arg_dict = make_arg_dict(func)[arg_name]
     if "help" in arg_dict:
         if "default" in arg_dict:
@@ -225,13 +225,13 @@ def arg_from_docstr(parser, func, arg_name, short_name=None):
                 arg_dict["help"] += " (default: %(default)s)"
         else:
             arg_dict["help"] += " (required)"
-
+        
         if "type" in arg_dict:
             if arg_dict["type"] == bool:
                 arg_dict["help"] += " [boolean]"
             else:
                 arg_dict["help"] += " [%(type)s]"
-
+    
     # Special case for boolean args
     if arg_dict["type"] == bool:
         if arg_dict["default"] == False:
@@ -240,12 +240,12 @@ def arg_from_docstr(parser, func, arg_name, short_name=None):
         elif arg_dict["default"] == True:
             arg_dict["action"] = "store_false"
             del arg_dict["type"]
-
+    
     # Special case for lists args
     elif isinstance(arg_dict["type"], list):
         arg_dict["nargs"] = "*"
         arg_dict["type"] = arg_dict["type"][0]
-
+    
     parser.add_argument(*arg_names, **arg_dict)
 
 
@@ -259,11 +259,11 @@ def ordered_load_yaml(yaml_fn, Loader=yaml.Loader, **kwargs):
     # Define custom loader
     class OrderedLoader(Loader):
         pass
-
+    
     def construct_mapping(loader, node):
         loader.flatten_mapping(node)
         return OrderedDict(loader.construct_pairs(node))
-
+    
     OrderedLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_mapping)
     # Try to load file
     try:
@@ -281,12 +281,12 @@ def ordered_dump_yaml(d, yaml_fn, Dumper=yaml.Dumper, **kwargs):
     # Define custom dumper
     class OrderedDumper(Dumper):
         pass
-
+    
     def _dict_representer(dumper, data):
         return dumper.represent_mapping(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items())
-
+    
     OrderedDumper.add_representer(OrderedDict, _dict_representer)
-
+    
     # Try to dump dict to file
     try:
         with open(yaml_fn, "w") as yaml_fp:
@@ -330,11 +330,11 @@ def get_version_str(d):
 
 def get_versipy_yaml(versipy_fn, log):
     """load end check versipy file"""
-
+    
     # Try to load YAML file
     log.debug("Loading versipy YAML file")
     info_d = ordered_load_yaml(versipy_fn)
-
+    
     # Check that all fields are there
     log.debug("Checking file structure")
     for field in ["version", "managed_values", "managed_files"]:
@@ -342,7 +342,7 @@ def get_versipy_yaml(versipy_fn, log):
             raise ValueError("Missing section '{}' in versipy YAML file".format(field))
         if not info_d[field]:
             raise ValueError("Empty section '{}' in versipy YAML file".format(field))
-
+    
     # Verify validity of version string
     log.debug("Checking version")
     for field in ["major", "minor", "micro", "a", "b", "rc", "post", "dev"]:
@@ -351,7 +351,7 @@ def get_versipy_yaml(versipy_fn, log):
     version_str = get_version_str(info_d["version"])
     if not is_canonical_version(version_str):
         raise ValueError("Current version {} is not a valid PEP canonical version".format(version_str))
-
+    
     return info_d
 
 
@@ -378,11 +378,11 @@ def increment_version(
     post=False,
     dev=False,
 ):
-
+    
     # safe increment variable even if None
     def increment_safe(v):
         return 1 if v is None else v + 1
-
+    
     version_d = copy.deepcopy(version_d)
     if major:
         log.debug("Increment major level and reset all lower levels")
@@ -392,13 +392,13 @@ def increment_version(
         log.debug("Increment minor level and reset all lower levels")
         version_d["minor"] = increment_safe(version_d["minor"])
         version_d = reset_version(version_d, levels=["micro", "a", "b", "rc", "post", "dev"])
-
+    
     # optional micro version number
     if micro:
         log.debug("Increment micro level and reset all lower levels")
         version_d["micro"] = increment_safe(version_d["micro"])
         version_d = reset_version(version_d, levels=["a", "b", "rc", "post", "dev"])
-
+    
     # optional release type version
     if rc:
         log.debug("Increment rc level and reset all lower levels")
@@ -412,7 +412,7 @@ def increment_version(
         log.debug("Increment a level and reset all lower levels")
         version_d["a"] = increment_safe(version_d["a"])
         version_d = reset_version(version_d, levels=["b", "rc", "post", "dev"])
-
+    
     # optional post and dev tags
     if post:
         log.debug("Increment post level and reset all lower levels")
@@ -420,12 +420,12 @@ def increment_version(
     if dev:
         log.debug("Increment dev level and reset all lower levels")
         version_d["dev"] = increment_safe(version_d["dev"])
-
+    
     # sanity check
     version_str = get_version_str(version_d)
     if not is_canonical_version(version_str):
         raise ValueError("Current version {version_str} is not a valid PEP canonical version")
-
+    
     log_dict(version_d, log.debug, "Updated version values")
     return version_d
 
@@ -434,7 +434,7 @@ def parse_version_str(version_str, log):
     """"""
     if not is_canonical_version(version_str):
         raise ValueError("Current version {version_str} is not a valid PEP canonical version")
-
+    
     log.debug("Split version number into a list")
     alphabet = list(string.ascii_letters)
     l = []
@@ -452,7 +452,7 @@ def parse_version_str(version_str, log):
         elif c.isdigit():
             s += c
     l.append(s)
-
+    
     log.debug("Store list values in version dictionary")
     version_d = OrderedDict(major=0, minor=None, micro=None, a=None, b=None, rc=None, post=None, dev=None)
     if l[0].isdigit():
@@ -466,7 +466,7 @@ def parse_version_str(version_str, log):
             if e.startswith(tag):
                 version_d[tag] = int(e.strip(tag))
                 break
-
+    
     log_dict(version_d, log.debug, "Updated version values")
     return version_d
 
@@ -474,20 +474,20 @@ def parse_version_str(version_str, log):
 def update_managed_files(info_d, overwrite, dry, log):
     """"""
     version_str = get_version_str(info_d["version"])
-
+    
     for src_fn, dest_fn in info_d["managed_files"].items():
         log.debug("Updating file {}".format(dest_fn))
-
+        
         # Bulletproof reading and writing
         try:
             src_fp = dest_fp = None
-
+            
             # Open template file for reading
             try:
                 src_fp = open(src_fn, "r")
             except:
                 raise IOError("Cannot read source Template file: {}".format(src_fn))
-
+            
             # Open destination file for writing
             if not dry:
                 try:
@@ -501,17 +501,48 @@ def update_managed_files(info_d, overwrite, dry, log):
                     dest_fp = open(dest_fn, "w")
                 except:
                     raise IOError("Cannot write to destination file: {}".format(dest_fn))
-
+            
             s = src_fp.read()
             s = s.replace("__package_version__", version_str)
             for k, v in info_d["managed_values"].items():
-                s = s.replace(k, v)
-
+                if isinstance(v, list):
+                    key_name = k[2:-2]
+                    """
+                    Let me explain the ugliest regex in the world. Note that curly braces are doubled for escaping
+                    __@{{                  Literal
+                    ((?!::)[^}}]*)         Not :: and not }
+                    ::                     Literal
+                    (((?!{key_name}).)*)   Not key_name
+                    {key_name}             Literally key_name
+                    ([^}}]*)               Not curly brace
+                    }}__                   Literal
+                    
+                    So it looks for a string built like:
+                    __@{<A>::<B>key_name<C>}__
+                    and will replace it with:
+                    <B>value1<C><A><B>value2<C><A><B>value3<C>
+                    
+                    The regex works for multiple ocurrences.
+                    
+                    For example, assuming key_name is "dependencies" and our dependencies are "numpy", "meth5" and "pandas",
+                    and it finds something like:
+                    __@{, ::"dependencies"}__
+                    it will be replaced with:
+                    "numpy", "meth5", "pandas"
+                    """
+                    s = re.sub(
+                        f"__@{{((?!::)[^}}]*)::(((?!{key_name}).)*){key_name}([^}}]*)}}__",
+                        "\\1".join([f"\\2{vi}\\3" for vi in v]),
+                        s,
+                    )
+                else:
+                    s = s.replace(k, v)
+            
             if dry:
                 stdout_print(s)
             else:
                 dest_fp.write(s)
-
+        
         finally:
             # Try to close file pointers
             for fp, fn in [[src_fp, src_fn], [dest_fp, dest_fn]]:
@@ -541,7 +572,7 @@ def update_versipy_files(info_d, versipy_fn, versipy_history_fn, comment, overwr
 
 def get_versipy_yaml_template():
     info_d = OrderedDict()
-
+    
     # Version section
     info_d["version"] = OrderedDict()
     info_d["version"]["major"] = 0
@@ -552,7 +583,7 @@ def get_versipy_yaml_template():
     info_d["version"]["rc"] = None
     info_d["version"]["post"] = None
     info_d["version"]["dev"] = None
-
+    
     # Managed values section
     info_d["managed_values"] = OrderedDict()
     info_d["managed_values"]["__package_name__"] = "package name"
@@ -561,22 +592,22 @@ def get_versipy_yaml_template():
     info_d["managed_values"]["__package_licence__"] = "package licence"
     info_d["managed_values"]["__author_name__"] = "author name"
     info_d["managed_values"]["__author_email__"] = "author contact email"
-
+    
     # Managed files section
     info_d["managed_files"] = OrderedDict()
     info_d["managed_files"]["versipy_templates/setup.py"] = "setup.py"
     info_d["managed_files"]["versipy_templates/meta.yaml"] = "meta.yaml"
     info_d["managed_files"]["versipy_templates/__init__.py"] = "versipy/__init__.py"
     info_d["managed_files"]["versipy_templates/README.md"] = "README.md"
-
+    
     return info_d
 
 
 def write_versipy_yaml(versipy_fn, overwrite, log):
-
+    
     info_d = versipy_info_d()
     log_dict(info_d, log.debug, "template info dict")
-
+    
     # Open destination file for writing
     log.debug("Try to dump data to YAML file {}".format(versipy_fn))
     if not overwrite and os.path.isfile(versipy_fn):
@@ -593,18 +624,18 @@ def git_files(files, version, comment, git_tag, log):
         log.debug("Acquire local repository")
         repo = Repo()
         remote = repo.remote("origin")
-
+        
         log.debug("Add, commit and push version files")
         for f in files:
             repo.index.add(f)
         commit = repo.index.commit(message=comment)
         push = remote.push()
-
+        
         if git_tag:
             log.debug("Set and push new version tag")
             tag = repo.create_tag(version, message=comment)
             push = remote.push(tag)
-
+    
     except Exception as E:
         log.info("Failed to push to remote")
         log.debug(type(E), str(E))

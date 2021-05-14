@@ -16,3 +16,15 @@
 2020-10-27 16:29:35.809467	0.2.3.dev2	Update doc and formatting changes
 2020-10-27 16:34:43.746265	0.2.4	Update doc and formatting changes
 2020-10-27 18:28:53.873189	0.2.4.post1	typo fix
+2021-05-14 14:33:22.566348	0.2.4.post1.dev1	Versipy auto bump-up
+2021-05-14 14:34:34.599597	0.2.4.post1.dev2	Versipy auto bump-up
+2021-05-14 14:34:59.852766	0.2.4.post1.dev3	Versipy auto bump-up
+2021-05-14 14:41:40.568131	0.2.4.post1.dev4	Versipy auto bump-up
+2021-05-14 14:42:32.820918	0.2.4.post1.dev5	Versipy auto bump-up
+2021-05-14 14:42:55.346348	0.2.4.post1.dev6	Versipy auto bump-up
+2021-05-14 14:43:29.700489	0.2.4.post1.dev7	Versipy auto bump-up
+2021-05-14 14:43:46.163946	0.2.4.post1.dev8	Versipy auto bump-up
+2021-05-14 14:44:38.270605	0.2.4.post1.dev9	Versipy auto bump-up
+2021-05-14 14:46:00.410942	0.2.4.post1.dev10	Versipy auto bump-up
+2021-05-14 14:46:48.540644	0.2.4.post1.dev11	Versipy auto bump-up
+2021-05-14 14:47:48.960540	0.2.5	Versipy auto bump-up

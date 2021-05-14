@@ -1,4 +1,4 @@
-{% set version = "0.2.4.post1" %}
+{% set version = "0.2.5" %}
 {% set name = "versipy" %}
 
 package:
@@ -19,8 +19,9 @@ build:
 requirements:
   build:
     - python>=3.6
-    - pip>=19.2.1
-    - ripgrep>=11.0.1
+    - colorlog>=4.1.0
+    - pyyaml>=5.3.1
+    - gitpython>=3.1.9
   run:
     - colorlog>=4.1.0
     - pyyaml>=5.3.1
