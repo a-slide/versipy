@@ -1,11 +1,11 @@
 version:
   major: 0
   minor: 2
-  micro: 4
+  micro: 5
   a: null
   b: null
   rc: null
-  post: 1
+  post: null
   dev: null
 managed_values:
   __package_name__: versipy
@@ -19,14 +19,16 @@ managed_values:
   __package_licence_url__: https://www.gnu.org/licenses/gpl-3.0.en.html
   __minimal_python__: '>=3.6'
   __entry_point1__: versipy=versipy.__main__:main
-  __dependency1__: colorlog>=4.1.0
-  __dependency2__: pyyaml>=5.3.1
-  __dependency3__: gitpython>=3.1.9
-  __classifiers_1__: 'Development Status :: 3 - Alpha'
-  __classifiers_2__: 'Intended Audience :: Science/Research'
-  __classifiers_3__: 'Topic :: Scientific/Engineering :: Bio-Informatics'
-  __classifiers_4__: 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
-  __classifiers_5__: 'Programming Language :: Python :: 3'
+  __dependencies__:
+  - colorlog>=4.1.0
+  - pyyaml>=5.3.1
+  - gitpython>=3.1.9
+  __classifiers__:
+  - 'Development Status :: 3 - Alpha'
+  - 'Intended Audience :: Science/Research'
+  - 'Topic :: Scientific/Engineering :: Bio-Informatics'
+  - 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
+  - 'Programming Language :: Python :: 3'
   __citation__: Adrien Leger. (2020, October 27). a-slide/versipy 0.2.2 (Version 0.2.2).
     Zenodo. http://doi.org/10.5281/zenodo.4139248
 managed_files:
