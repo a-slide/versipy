@@ -179,7 +179,58 @@ deploy:
       tags: true
 ```
 
+### Lists
+
+In addition to simple string replacement, `versipy` offers some advanced syntax for the support of lists (such as 
+dependencies or classifiers). This syntax allows to some flexibility in formatting lists depending on the template.
+
+If a managed variable in `versipy.yaml` contains a list, the template needs to specify the formatting as such:
+
+`__@{<SEPARATOR>::<PREFIX><VARIABLE_NAME><SUFFIX>}`__
+
+For example, if `versipy.yaml` contains this entry:
+
+```yaml
+managed_values:
+  __dependencies__:
+  - numpy
+  - pandas
+  - matplotlib
+```
+
+And the template for `setup.py` contains the following line:
+```python
+    install_requires=["colorlog>=4.1.0", "pyyaml>=5.3.1", "gitpython>=3.1.9"],
+```
+
+then versipy will interpret `, ` as the list separator, and `"` as both prefix and suffix. The resulting line will then be:
+
+```python
+    install_requires=["numpy", "pandas", "matplotlib"],
+```
+
+Wheras in `meta.yaml` you might define in the template:
+```yaml
+  run:
+  - colorlog>=4.1.0
+  - pyyaml>=5.3.1
+  - gitpython>=3.1.9
+```
+
+where `versipy` interprets `\n  - ` as the separator, and the prefix and suffix are empty strings. The resulting `meta.yaml`
+will then contain:
+
+```yaml
+  run:
+  - numpy
+  - pandas
+  - matplotlib   
+```
+
+
 ---
+
+
 
 ## Classifiers
 

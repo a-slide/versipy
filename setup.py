@@ -23,7 +23,7 @@ setup(
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Programming Language :: Python :: 3"
+        "Programming Language :: Python :: 3"],
     install_requires=["colorlog>=4.1.0",
         "pyyaml>=5.3.1",
         "gitpython>=3.1.9"],

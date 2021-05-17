@@ -28,3 +28,4 @@
 2021-05-14 14:46:00.410942	0.2.4.post1.dev10	Versipy auto bump-up
 2021-05-14 14:46:48.540644	0.2.4.post1.dev11	Versipy auto bump-up
 2021-05-14 14:47:48.960540	0.2.5	Versipy auto bump-up
+2021-05-17 11:58:08.278705	0.2.5	Manually set version

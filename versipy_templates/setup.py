@@ -20,7 +20,7 @@ setup(
     license="__package_licence__",
     python_requires="__minimal_python__",
     classifiers=[__@{,
-        ::"classifiers"}__
+        ::"classifiers"}__],
     install_requires=[__@{,
         ::"dependencies"}__],
     packages=["__package_name__"],
